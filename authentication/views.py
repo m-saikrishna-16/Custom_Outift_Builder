@@ -338,7 +338,15 @@ def place_order(request):
             name = data.get("name", "Anonymous")
 
             # Calculate total price
-            total_price = sum(item.get('price', 0) * item.get('quantity', 1) for item in cart_items)
+            total_price = 0
+
+            for item in cart_items:
+                try:
+                    price = int(item.get('price', 0))
+                    quantity = int(item.get('quantity', 1))
+                    total_price += price * quantity
+                except Exception as e:
+                    print("Error converting item:", item, e)
 
             # Save Order
             order = Order.objects.create(name=name, total=total_price)
@@ -349,7 +357,7 @@ def place_order(request):
                     order=order,
                     product_id=item.get('id', 0),  # 0 or None for custom designs
                     title=item.get('title', 'Custom Design'),
-                    price=item.get('price', 0),
+                    price=int(item.get('price', 0)),
                     quantity=item.get('quantity', 1),
                     image=item.get('image', '')
                 )
