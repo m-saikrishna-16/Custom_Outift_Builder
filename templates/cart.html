@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Torendo | Shopping Bag</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Assistant, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      color: #282c3f;
+    }
+
+    /* Professional Navbar */
+    .navbar {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #f5f5f6;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .brand-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #282c3f;
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+
+    /* Layout Split */
+    .cart-wrapper {
+      max-width: 1100px;
+      margin: 30px auto;
+      display: flex;
+      gap: 30px;
+      padding: 0 20px;
+      min-height: 60vh; /* Ensures empty state looks centered vertically */
+    }
+
+    .cart-items-section {
+      flex: 1.5;
+    }
+
+    .cart-summary-section {
+      flex: 1;
+    }
+
+    /* Product Card */
+    .cart-item {
+      display: flex;
+      border: 1px solid #eaeaec;
+      border-radius: 4px;
+      padding: 12px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .cart-item img {
+      width: 110px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .item-details {
+      margin-left: 15px;
+      flex-grow: 1;
+    }
+
+    .item-brand {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .item-title {
+      font-size: 14px;
+      color: #535766;
+      margin-bottom: 10px;
+    }
+
+    .item-price-info {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .current-price {
+      font-weight: 700;
+    }
+
+    .mrp-price {
+      text-decoration: line-through;
+      color: #7e818c;
+      font-size: 12px;
+    }
+
+    .qty-selector {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      background: #f5f5f6;
+      width: fit-content;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0 10px;
+      color: #282c3f;
+    }
+
+    .remove-icon {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #282c3f;
+    }
+
+    .price-details-card {
+      border: 1px solid #eaeaec;
+      padding: 20px;
+      position: sticky;
+      top: 110px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7e818c;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .total-row {
+      border-top: 1px solid #eaeaec;
+      padding-top: 12px;
+      margin-top: 15px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      background-color: #0e7c06;
+      color: white;
+      border: none;
+      padding: 14px;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      letter-spacing: 1px;
+    }
+
+    .place-order-btn:hover {
+      background-color: #49e634;
+    }
+
+    /* Centered Empty Cart Styling */
+    .empty-cart {
+      grid-column: 1 / -1; /* For flex/grid centering if needed */
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px;
+    }
+
+    .empty-cart h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .empty-cart p {
+      margin-bottom: 25px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="brand-logo">TORENDO</a>
+  </nav>
+
+  <div class="cart-wrapper">
+    <div class="cart-items-section" id="cart-items"></div>
+    <div class="cart-summary-section" id="cart-summary"></div>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function renderCart() {
+      const itemsContainer = document.getElementById("cart-items");
+      const summaryContainer = document.getElementById("cart-summary");
+      const wrapper = document.querySelector(".cart-wrapper");
+
+      if (cart.length === 0) {
+        // Updated Empty Cart UI - No image, fully centered
+        itemsContainer.innerHTML = `
+          <div class="empty-cart">
+            <h3>Hey, it feels so light!</h3>
+            <p style="color:#7e818c">There is nothing in your bag. Let's add some items.</p>
+            <a href="/products/" style="color:#ff3f6c; text-decoration:none; font-weight:700; border: 1px solid #ff3f6c; padding: 12px 30px; border-radius: 4px;">ADD ITEMS FROM WISHLIST</a>
+          </div>`;
+        summaryContainer.innerHTML = "";
+        wrapper.style.display = "block"; // Reset flex to allow centering
+        return;
+      }
+
+      // Revert to flex layout if items exist
+      wrapper.style.display = "flex";
+      itemsContainer.innerHTML = "";
+      let subtotal = 0;
+
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.title}">
+          <i class="fa-solid fa-xmark remove-icon" onclick="removeItem(${item.id})"></i>
+          <div class="item-details">
+            <div class="item-brand">TORENDO</div>
+            <div class="item-title">${item.title}</div>
+            <div class="item-price-info">
+              <span class="current-price">₹${item.price}</span>
+              <span class="mrp-price">₹${Math.floor(item.price * 1.4)}</span>
+              <span style="color:#ff905a; font-size:12px; font-weight:700;">(40% OFF)</span>
+            </div>
+            <div class="qty-selector">
+              Qty: 
+              <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+              <span>${item.quantity}</span>
+              <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+        itemsContainer.appendChild(div);
+      });
+
+      const deliveryFee = subtotal > 1000 ? 0 : 99;
+      summaryContainer.innerHTML = `
+        <div class="price-details-card">
+          <div class="sidebar-title">Price Details (${cart.length} Items)</div>
+          <div class="price-row">
+            <span>Total MRP</span>
+            <span>₹${Math.floor(subtotal * 1.4)}</span>
+          </div>
+          <div class="price-row">
+            <span>Discount on MRP</span>
+            <span style="color:#03a685">-₹${Math.floor(subtotal * 0.4)}</span>
+          </div>
+          <div class="price-row">
+            <span>Convenience Fee</span>
+            <span>${deliveryFee === 0 ? '<span style="color:#03a685">FREE</span>' : '₹' + deliveryFee}</span>
+          </div>
+          <div class="price-row total-row">
+            <span>Total Amount</span>
+            <span>₹${subtotal + deliveryFee}</span>
+          </div>
+          <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+        </div>
+      `;
+    }
+
+    function changeQuantity(id, delta) {
+      const item = cart.find(p => p.id === id);
+      if (item) {
+        item.quantity = Math.max(1, item.quantity + delta);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
+      }
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(item => item.id !== id);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function placeOrder() {
+      const USERNAME = "{{ username }}";
+      fetch("/place_order/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ cart: cart, name: USERNAME })
+      })
+      .then(response => {
+        if (response.ok) {
+          localStorage.removeItem("cart");
+          window.location.href = "/order_success/";
+        } else {
+          alert("Order failed. Please check your connection.");
+        }
+      });
+    }
+
+    function getCSRFToken() {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, 10) === ('csrftoken=')) {
+            cookieValue = decodeURIComponent(cookie.substring(10));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>

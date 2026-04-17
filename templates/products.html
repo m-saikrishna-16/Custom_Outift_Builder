@@ -1,0 +1,322 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Torendo | Online Fashion Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Assistant, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #ffffff;
+      margin: 0;
+      color: #282c3f;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      padding: 0 4%;
+      box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1000;
+    }
+
+    .brand-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #282c3f;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    /* Search Bar Styling */
+    .search-container {
+      flex-grow: 1;
+      max-width: 500px;
+      margin: 0 40px;
+      position: relative;
+    }
+
+    .search-container input {
+      width: 100%;
+      background: #f5f5f6;
+      border: 1px solid #f5f5f6;
+      border-radius: 4px;
+      padding: 10px 10px 10px 45px;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-container input:focus {
+      background: #fff;
+      border-color: #eaeaec;
+    }
+
+    .search-container i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #696e79;
+    }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .nav-icons i {
+      font-size: 20px;
+      color: #282c3f;
+      cursor: pointer;
+    }
+
+    /* Product Grid */
+    .products-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 30px;
+      padding: 40px 2%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      position: relative;
+      background: #fff;
+      transition: box-shadow 0.3s ease;
+      cursor: pointer;
+      overflow: hidden; /* Contains the zoom */
+    }
+
+    .product-card:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 133%; 
+      overflow: hidden;
+      background-color: #f9f9f9;
+    }
+
+    /* Zoom Feature */
+    .product-card img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease; /* Smooth zoom transition */
+    }
+
+    .product-card:hover img {
+      transform: scale(1.1); /* Zoom level */
+    }
+
+    /* Info Section */
+    .product-info {
+      padding: 10px 10px 15px;
+      position: relative;
+      z-index: 2;
+      background: #fff;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 5px;
+      color: #282c3f;
+    }
+
+    .product-name {
+      font-size: 14px;
+      color: #535766;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 400;
+    }
+
+    .price-container {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .discount-price {
+      font-weight: 700;
+      color: #282c3f;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #7e818c;
+      font-size: 12px;
+    }
+
+    .discount-percentage {
+      color: #ff905a;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Action hidden until hover */
+    .hover-actions {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      padding: 10px;
+      box-sizing: border-box;
+      border-top: 1px solid #eaeaec;
+      z-index: 3;
+    }
+
+    .product-card:hover .hover-actions {
+      display: block;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 10px;
+      background: #ff3f6c;
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 2px;
+    }
+
+    /* Floating Cart Link */
+    .cart-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #282c3f;
+      color: #fff;
+      padding: 15px 25px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0,0,0, 0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="brand-logo">TORENDO</a>
+    
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="productSearch" placeholder="Search for products, brands and more" onkeyup="filterProducts()">
+    </div>
+
+    <div class="nav-icons">
+      <i class="fa-regular fa-user"></i>
+      <a href="cart/" style="color: inherit; text-decoration: none;">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </a>
+    </div>
+  </nav>
+
+  <div class="products-container" id="product-list">
+    </div>
+
+  <a href="cart/" class="cart-float">
+    <i class="fa-solid fa-bag-shopping"></i> View Bag
+  </a>
+
+  <script>
+    let allProducts = []; // To store data for searching
+
+    fetch("/get-products/")
+      .then(response => response.json())
+      .then(products => {
+        allProducts = products;
+        displayProducts(allProducts);
+      });
+
+    function displayProducts(productsToRender) {
+      const container = document.getElementById("product-list");
+      container.innerHTML = ""; // Clear current grid
+
+      productsToRender.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        
+        card.innerHTML = `
+          <div class="image-container">
+              <img src="${product.image}" alt="${product.title}">
+          </div>
+          <div class="product-info">
+              <div class="brand-name">TORENDO</div>
+              <div class="product-name">${product.title}</div>
+              <div class="price-container">
+                  <span class="discount-price">Rs. ${product.price}</span>
+                  <span class="original-price">Rs. ${Math.floor(product.price * 1.4)}</span>
+                  <span class="discount-percentage">(40% OFF)</span>
+              </div>
+              <div class="hover-actions">
+                  <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart(${product.id})">
+                      ADD TO BAG
+                  </button>
+              </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Search Logic
+    function filterProducts() {
+      const searchTerm = document.getElementById("productSearch").value.toLowerCase();
+      const filtered = allProducts.filter(product => 
+        product.title.toLowerCase().includes(searchTerm)
+      );
+      displayProducts(filtered);
+    }
+
+    function addToCart(id) {
+      const product = allProducts.find(p => p.id === id);
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = cart.findIndex(item => item.id === id);
+
+      if (index > -1) {
+        cart[index].quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert("Added to Bag!");
+    }
+  </script>
+</body>
+</html>
