@@ -15,6 +15,11 @@ from django.shortcuts import render
 from dotenv import load_dotenv
 import google.generativeai as genai
 
+from django.http import JsonResponse
+from .models import Product
+from django.conf import settings
+
+genai.configure(api_key=settings.GEMINI_API_KEY)
 # Load environment variables
 load_dotenv()
 
@@ -364,5 +369,16 @@ from .models import Product
 
 def get_products(request):
     products = Product.objects.all()
-    data = [product.to_dict() for product in products]
+
+    data = []
+    for product in products:
+        data.append({
+            "id": product.id,
+            "title": product.title,
+            "price": product.price,
+
+            # 🔥 STATIC FIX
+            "image": f"/static/images/{product.image.name}" if product.image else "/static/images/default.png"
+        })
+
     return JsonResponse(data, safe=False)
