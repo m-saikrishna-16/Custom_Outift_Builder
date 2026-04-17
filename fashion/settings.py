@@ -23,7 +23,8 @@ import pytz
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+import os
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['*']
 
