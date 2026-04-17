@@ -122,16 +122,18 @@ body {
 }
 
 .image-container {
-  height: 250px;
-  overflow: hidden;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
 }
 
 .product-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
 }
-
 .product-info {
   padding: 10px;
 }
