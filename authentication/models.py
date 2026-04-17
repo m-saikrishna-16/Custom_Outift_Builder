@@ -13,7 +13,7 @@ class Product(models.Model):
             "id": self.id,
             "title": self.title,
             "price": float(self.price),
-            "image": f"/static/images/{self.image.name}" if self.image else "/static/images/default.png"
+            "image": f"/static/{self.image.name}" if self.image else "/static/images/default.png"
         }
 
 from django.db import models
