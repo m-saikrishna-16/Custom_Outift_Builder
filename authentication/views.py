@@ -378,7 +378,7 @@ def get_products(request):
             "price": product.price,
 
             # 🔥 STATIC FIX
-            "image": f"/static/images/{product.image.name}" if product.image else "/static/images/default.png"
+            "image": f"/static/images/{product.image}" if product.image else "/static/images/default.png"
         })
 
     return JsonResponse(data, safe=False)
