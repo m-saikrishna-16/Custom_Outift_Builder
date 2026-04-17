@@ -342,7 +342,7 @@ def place_order(request):
 
             for item in cart_items:
                 try:
-                    price = int(item.get('price', 0))
+                    price = float(item.get('price', 0))
                     quantity = int(item.get('quantity', 1))
                     total_price += price * quantity
                 except Exception as e:
@@ -357,7 +357,7 @@ def place_order(request):
                     order=order,
                     product_id=item.get('id', 0),  # 0 or None for custom designs
                     title=item.get('title', 'Custom Design'),
-                    price=int(item.get('price', 0)),
+                    price=float(item.get('price', 0)),
                     quantity=item.get('quantity', 1),
                     image=item.get('image', '')
                 )
