@@ -4,4 +4,7 @@ google-generativeai
 Pillow
 pytz
 django-environ
-
+gunicorn
+whitenoise
+dj-database-url
+psycopg2-binary
