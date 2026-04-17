@@ -2,107 +2,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Torendo | Online Fashion Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Torendo | Fashion Store</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-  <style>
-    body {
-      font-family: Assistant, Arial;
-      background: #ffffff;
-      margin: 0;
-      color: #282c3f;
-    }
+<style>
+body {
+  font-family: Assistant, Arial;
+  margin: 0;
+  background: #f5f5f6;
+}
 
-    .navbar {
-      height: 80px;
-      display: flex;
-      align-items: center;
-      padding: 0 4%;
-      box-shadow: 0 4px 12px 0 rgba(0,0,0,.05);
-      position: sticky;
-      top: 0;
-      background: #fff;
-      z-index: 1000;
-    }
+/* NAVBAR */
+.navbar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 4%;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+}
 
-    .brand-logo {
-      font-size: 24px;
-      font-weight: 800;
-      color: #282c3f;
-      text-decoration: none;
-    }
+.brand-logo {
+  font-size: 24px;
+  font-weight: 800;
+  text-decoration: none;
+  color: #282c3f;
+}
 
-    .search-container {
-      flex-grow: 1;
-      max-width: 500px;
-      margin: 0 40px;
-      position: relative;
-    }
+.search-container {
+  flex: 1;
+  margin: 0 30px;
+  position: relative;
+}
 
-    .search-container input {
-      width: 100%;
-      background: #f5f5f6;
-      border-radius: 4px;
-      padding: 10px 10px 10px 45px;
-    }
+.search-container input {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  background: #f5f5f6;
+  border-radius: 4px;
+  border: none;
+}
 
-    .search-container i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
+.search-container i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
-    .products-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 30px;
-      padding: 40px 2%;
-    }
+/* CART */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+}
 
-    .product-card {
-      background: #fff;
-      cursor: pointer;
-      overflow: hidden;
-      transition: 0.3s;
-    }
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: red;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
 
-    .product-card:hover {
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
+/* LAYOUT */
+.container {
+  display: flex;
+}
 
-    .image-container {
-      width: 100%;
-      height: 250px;
-      overflow: hidden;
-    }
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #fff;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
 
-    .product-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.sidebar h4 {
+  margin-bottom: 10px;
+}
 
-    .product-info {
-      padding: 10px;
-    }
+.sidebar button {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
 
-    .discount-price {
-      font-weight: bold;
-    }
+.sidebar button:hover {
+  background: #ddd;
+}
 
-    .add-to-cart-btn {
-      width: 100%;
-      padding: 10px;
-      background: #ff3f6c;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
+/* PRODUCTS */
+.products-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  padding: 20px;
+}
+
+.product-card {
+  background: #fff;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transform: translateY(-5px);
+}
+
+.image-container {
+  height: 250px;
+  overflow: hidden;
+}
+
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 10px;
+}
+
+.product-info h4 {
+  margin: 5px 0;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 10px;
+  background: #ff3f6c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart-btn:hover {
+  background: #e7335a;
+}
+</style>
 </head>
 
 <body>
@@ -111,51 +161,66 @@
   <a href="/" class="brand-logo">TORENDO</a>
 
   <div class="search-container">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input type="text" id="productSearch" placeholder="Search..." onkeyup="filterProducts()">
+    <i class="fa fa-search"></i>
+    <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchProduct()">
+  </div>
+
+  <div class="cart-icon" onclick="window.location.href='/cart/'">
+    🛒
+    <span class="cart-count" id="cart-count">0</span>
   </div>
 </nav>
 
-<div class="products-container" id="product-list"></div>
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h4>Filters</h4>
+
+    <p>Price</p>
+    <button onclick="filterPrice(500)">Below ₹500</button>
+    <button onclick="filterPrice(1000)">Below ₹1000</button>
+    <button onclick="resetFilters()">All</button>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="products-container" id="product-list"></div>
+
+</div>
 
 <script>
 let allProducts = [];
 
+// Fetch products
 fetch("/get-products/")
   .then(res => res.json())
   .then(data => {
-    console.log("Products:", data);  // 🔥 debug
     allProducts = data;
     displayProducts(allProducts);
-  })
-  .catch(err => {
-    console.error("Error fetching products:", err);
+    updateCartCount();
   });
 
+// Display products
 function displayProducts(products) {
   const container = document.getElementById("product-list");
   container.innerHTML = "";
 
   products.forEach(p => {
-
-    // ✅ FIX IMAGE URL
-    let imageUrl = p.image;
-
-    if (!imageUrl) {
-      imageUrl = "{% static 'images/default.png' %}";
-    }
+    let imageUrl = p.image || "{% static 'images/default.png' %}";
 
     const card = document.createElement("div");
     card.className = "product-card";
 
     card.innerHTML = `
       <div class="image-container">
-        <img src="${imageUrl}" alt="${p.title}">
+        <img src="${imageUrl}">
       </div>
       <div class="product-info">
         <h4>${p.title}</h4>
-        <p>Rs. ${p.price}</p>
-        <button class="add-to-cart-btn">Add to Cart</button>
+        <p>₹${p.price}</p>
+        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">
+          Add to Cart
+        </button>
       </div>
     `;
 
@@ -163,14 +228,54 @@ function displayProducts(products) {
   });
 }
 
-// Search
-function filterProducts() {
-  const term = document.getElementById("productSearch").value.toLowerCase();
+// ADD TO CART
+function addToCart(id) {
+  const product = allProducts.find(p => p.id === id);
 
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+
+  alert("Added to Cart ✅");
+}
+
+// CART COUNT
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cart-count").innerText = cart.length;
+}
+
+// FILTERS
+function filterPrice(price) {
+  const filtered = allProducts.filter(p => p.price <= price);
+  displayProducts(filtered);
+}
+
+function resetFilters() {
+  displayProducts(allProducts);
+}
+
+// SEARCH
+function searchProduct() {
+  const term = document.getElementById("searchInput").value.toLowerCase();
   const filtered = allProducts.filter(p =>
     p.title.toLowerCase().includes(term)
   );
-
   displayProducts(filtered);
 }
 </script>
